@@ -15,10 +15,6 @@ COPY package*.json ./
 #  Install dependencies inside container
 RUN npm install
 
-# Bundle App Sources
-# Copy source code into workdir
-COPY . .
-
 RUN npm run build
 
 EXPOSE 3000
