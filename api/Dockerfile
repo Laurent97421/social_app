@@ -11,6 +11,8 @@ WORKDIR /usr/src/app
 
 # Copy package-lock.json and package.json from host to inside container working directory
 COPY package*.json ./
+COPY tsconfig.json ./
+
 
 #  Install dependencies inside container
 RUN npm install

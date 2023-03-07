@@ -4,9 +4,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
+    // ConfigModule will load and parse the .env file from the root directory and store it 
+    // in a private structure that we can access through the ConfigService
     ConfigModule.forRoot({isGlobal: true}),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -14,7 +17,8 @@ import { UserModule } from './user/user.module';
       autoLoadEntities: true,
       synchronize: true
     }),
-    UserModule
+    UserModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

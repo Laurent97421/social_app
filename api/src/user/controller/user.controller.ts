@@ -4,9 +4,12 @@ import { createUserDto } from '../model/dto/create-user.dto';
 import { UserInterface } from '../model/user.interface';
 import { UserHelperService } from '../service/user-helper/user-helper.service';
 import { UserService } from '../service/user/user.service';
-import { switchMap } from 'rxjs/operators'
+import { map, switchMap } from 'rxjs/operators'
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { LoginUserDto } from '../model/dto/login-user.dto';
+import { LoginResponseInterface } from '../model/login-response.interface';
+import { UseGuards } from '@nestjs/common/decorators';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guards';
 
 @Controller('users')
 export class UserController {
@@ -23,6 +26,7 @@ export class UserController {
         )
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get()
     findAll(
         @Query('page') page: number = 1,
@@ -33,13 +37,17 @@ export class UserController {
     }
 
     @Post('/login')
-    login(@Body() loginUserDto: LoginUserDto): Observable<boolean> {
+    login(@Body() loginUserDto: LoginUserDto): Observable<LoginResponseInterface> {
         return this.userHelperService.loginUserDtoToEntity(loginUserDto).pipe(
-            switchMap((user: UserInterface) => this.userService.login(user))
+            switchMap((user: UserInterface) => this.userService.login(user).pipe(
+                map((jwt: string) => {
+                    return {
+                        access_token: jwt,
+                        token_type: 'JWT',
+                        expires_in: 10000
+                    };
+                })
+            ))
         )
     }
-
-
-
-
 }
