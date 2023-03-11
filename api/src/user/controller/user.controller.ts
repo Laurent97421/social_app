@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { createUserDto } from '../model/dto/create-user.dto';
 import { UserInterface } from '../model/user.interface';
@@ -26,7 +26,6 @@ export class UserController {
         )
     }
 
-    @UseGuards(JwtAuthGuard)
     @Get()
     findAll(
         @Query('page') page: number = 1,
@@ -36,7 +35,7 @@ export class UserController {
         return this.userService.findAll({ page, limit, route: 'http://localhost:3000/api/users' });
     }
 
-    @Post('/login')
+    @Post('login')
     login(@Body() loginUserDto: LoginUserDto): Observable<LoginResponseInterface> {
         return this.userHelperService.loginUserDtoToEntity(loginUserDto).pipe(
             switchMap((user: UserInterface) => this.userService.login(user).pipe(
