@@ -22,7 +22,7 @@ export class UserService {
         this.snackbar.open(`User could not be created, due to: ${e.error.message}`, 'Close', {
           duration: 5000, horizontalPosition: 'right', verticalPosition: 'top'
         })
-        return throwError(e);
+        return throwError(() => e);
       })
     );
   }
