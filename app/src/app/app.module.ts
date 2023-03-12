@@ -6,11 +6,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { JwtModule } from '@auth0/angular-jwt';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 
-export function tokenGetter() {
-  return localStorage.getItem("acces_token")
+export function tokenGetter(): string {
+  return localStorage.getItem("acces_token") || '';
 }
 
 @NgModule({
@@ -28,7 +29,7 @@ export function tokenGetter() {
         tokenGetter: tokenGetter,
         allowedDomains: ['localhost:3000']
       }
-    })
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

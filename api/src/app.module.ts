@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthMiddleware } from './middleware/auth.middleware';
 import { UserController } from './user/controller/user.controller';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { UserController } from './user/controller/user.controller';
       synchronize: true
     }),
     UserModule,
-    AuthModule
+    AuthModule,
+    ChatModule
   ],
   controllers: [AppController],
   providers: [AppService],
